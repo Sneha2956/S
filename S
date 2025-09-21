@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    cout << "Enter number of processes: ";
+    int n; cin >> n;
+
+    vector<int> Burst(n+1), wait(n+1);
+    wait[0] = 0;
+
+    // Priority queue to pick the process with min burst time
+    // pair: {burst time, process number}
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+
+    for(int i=1; i<=n; i++) {
+        cout << "Burst time of process " << i << " : ";
+        cin >> Burst[i];
+        pq.push({Burst[i], i});
+    }
+
+    vector<int> order; // To store order of execution
+
+    int totalTime = 0;
+    int totalWait = 0;
+
+    while(!pq.empty()) {
+        auto p = pq.top(); pq.pop();
+        int bt = p.first;
+        int pid = p.second;
+
+        order.push_back(pid);
+
+        wait[pid] = totalTime;  // Waiting time = current total time
+        totalTime += bt;
+        totalWait += wait[pid];
+    }
+
+    // Print Gantt Chart
+    cout << "\nGantt Chart:\n";
+    for(int i=0; i<n; i++) {
+        if(i==n-1) cout << "P" << order[i];
+        else cout << "P" << order[i] << " --> ";
+    }
+    cout << endl;
+
+    cout << "\nTotal Turnaround Time: " << totalTime << endl;
+    cout << "Total Waiting Time: " << totalWait << endl;
+    cout << "Average Waiting Time: " << (double)totalWait / n << endl;
+    cout << "Average Turnaround Time: " << (double)totalTime / n << endl;
+
+    return 0;
+}
