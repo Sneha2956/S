@@ -277,3 +277,5 @@ print(f"\nTotal CPU idle time: {total_idle} units")
 if name == "main": 
 main()
 
+t.a.t=finish-arrival
+w.t=t.a.t-burst
